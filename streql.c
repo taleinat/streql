@@ -2,9 +2,9 @@
 
 // The core function: test two regions of memory for bytewise equality.
 static int equals_internal(const char *x, unsigned int xlen, const char *y, unsigned int ylen) {
-  if (xlen != ylen) return 0;
-
   int i, result = 0;
+
+  if (xlen != ylen) return 0;
   for (i = 0; i < xlen; i++) result |= x[i] ^ y[i];
   return result == 0;
 }
@@ -12,8 +12,9 @@ static int equals_internal(const char *x, unsigned int xlen, const char *y, unsi
 
 static PyObject *equals(PyObject *self, PyObject *args) {
   const char *x = NULL, *y = NULL; unsigned int xlen, ylen;
+  int equal;
   if (!PyArg_ParseTuple(args, "et#et#", "utf8", &x, &xlen, "utf8", &y, &ylen)) return NULL;
-  int equal = equals_internal(x, xlen, y, ylen);
+  equal = equals_internal(x, xlen, y, ylen);
   PyMem_Free((void*)x); PyMem_Free((void*)y);
 
   if (equal) {
